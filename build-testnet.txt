@@ -1,0 +1,94 @@
+cd src/func/jetton-bridge/
+
+Update chain_id in build-collector.fif to 97 (BSC testnet) or 5 (Goerli).
+
+Update MY_CHAIN_ID in params.fc to 97 (BSC testnet) or 5 (Goerli).
+
+Update CONFIG_PARAM_ID in params.fc to 79 (ETH) or 80 (BSC).
+
+Update parameter wallet-id in new-multisig.fif command line to 97 or 5.
+
+Update `lock_until` (123) in new-multisig.fif if needed
+
+Check that `func -V` is '0.4.2'
+
+__________________________________________________________________________
+eth_testnet tag
+__________________________________________________________________________
+Multisig compiled by `func-0.4.2`
+
+func -o multisig-code.fif -SPA multisig.fc
+
+fift -s new-multisig.fif -1 5 124 testnet-eth-new 2 uf_public_keys_testnet
+
+__________________________________________________________________________
+Collector compiled by `func-0.4.2`
+
+func -o votes-collector.fif -SPA votes-collector.fc
+
+fift -s new-collector.fif
+
+__________________________________________________________________________
+Jetton-wallet compiled by `func-0.4.2`
+
+func -o jetton-wallet.fif -SPA jetton-wallet.fc
+
+__________________________________________________________________________
+Jetton-minter compiled by `func-0.4.2`
+
+func -o jetton-minter.fif -SPA jetton-minter.fc
+
+__________________________________________________________________________
+Bridge compiled by `func-0.4.2`
+
+func -o bridge_code2.fif -SPA jetton-bridge.fc
+
+fift -s new-bridge.fif
+
+Send TONS to multisig, collector, bridge addresses
+
+sendfile /Users/tolya/dev/ton/bridge/token-bridge-func/src/func/jetton-bridge/bridge-create.boc
+sendfile /Users/tolya/dev/ton/bridge/token-bridge-func/src/func/jetton-bridge/votes-collector-create.boc
+sendfile /Users/tolya/dev/ton/bridge/token-bridge-func/src/func/jetton-bridge/testnet-eth-new-create.boc
+
+config 80 for BSC
+
+Multisig - kf8n7jRSwkvkKoqlt8YGyQ93IivUp52j6oIlleVsuKS2NYnr
+Collector - EQDTtD0leOd2aRtfX8sVwhdIpgoO1kvYj2iiBpbOMBgmi_I7
+Bridge - Ef-QhQLNRndggmLKXzFzA-F51rnjZ5yWY3ww2JjcHjEDohCg
+
+fift -s build-config79.fif \
+Ef-QhQLNRndggmLKXzFzA-F51rnjZ5yWY3ww2JjcHjEDohCg \ \\ bridge address
+kf8n7jRSwkvkKoqlt8YGyQ93IivUp52j6oIlleVsuKS2NYnr \ \\ multisig address
+0 \ \\ state_flags
+1 \ \\ burn-bridge-fee
+1 \ \\ bridge-mint-fee
+0.01 \ \\ wallet-min-tons-for-storage
+0.015 \ \\ wallet-gas-consumption
+0.1 \ \\ minter-min-tons-for-storage
+0.01 \ \\ discover-gas-consumption
+0x677908e3F6A168f3E867471B8896e710dB5e3C7B \ \\ external-chain-address
+Ef9fwskZLEuGDfYTRAtvt9k-mEdkaIskkUOsEwPw1wzXk7zR 0xe54cd631c97be0767172ad16904688962d09d2fe \
+Ef8jPzrhTYloKgTCsGgEFNx7OdH-sJ98etJnwrIVSsFxH9mu 0xeb05E1B6AC0d574eF2CF29FDf01cC0bA3D8F9Bf1 \
+Ef-fxGCPuPKNR6T4GcFxNQuLU5TykLKEAtkxWEfA1wBWy6JE 0xF636f40Ebe17Fb2A1343e5EEee9D13AA90888b51
+
+config 79 for ETH
+
+Multisig - kf9NLH8CsGUkEKGYzCxaLd9Th6T5YkO-MXsCEU9Rw1fiRhf9
+Collector - EQC1ZeKX1LNrlQ4bwi3je3KVM1AoZ3rkeyHM5hv9pYzmIh4v
+Bridge - Ef-lJBALjXSSwSKiedKzriSHixwQUxJ1BxTE05Ur5AXwZVjp
+
+fift -s build-config79.fif \
+Ef-lJBALjXSSwSKiedKzriSHixwQUxJ1BxTE05Ur5AXwZVjp \ \\ bridge address
+kf9NLH8CsGUkEKGYzCxaLd9Th6T5YkO-MXsCEU9Rw1fiRhf9 \ \\ multisig address
+0 \ \\ state_flags
+1 \ \\ burn-bridge-fee
+1 \ \\ bridge-mint-fee
+0.01 \ \\ wallet-min-tons-for-storage
+0.015 \ \\ wallet-gas-consumption
+0.1 \ \\ minter-min-tons-for-storage
+0.01 \ \\ discover-gas-consumption
+0x4Efd8f04B6fb4CFAF0cfaAC11Fb489b97DBebB60 \ \\ external-chain-address
+Ef9fwskZLEuGDfYTRAtvt9k-mEdkaIskkUOsEwPw1wzXk7zR 0xe54cd631c97be0767172ad16904688962d09d2fe \
+Ef8jPzrhTYloKgTCsGgEFNx7OdH-sJ98etJnwrIVSsFxH9mu 0xeb05E1B6AC0d574eF2CF29FDf01cC0bA3D8F9Bf1 \
+Ef-fxGCPuPKNR6T4GcFxNQuLU5TykLKEAtkxWEfA1wBWy6JE 0xF636f40Ebe17Fb2A1343e5EEee9D13AA90888b51
